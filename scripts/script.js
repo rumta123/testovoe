@@ -28,6 +28,9 @@ const app = Vue.createApp({
         axios
             .get('https://free-student.ru/process.php?action=read')
             .then(response => (this.info = response));
+            // axios
+            // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+            // .then(response => (this.info = response));
 
 
         this.getAllUsers()
