@@ -1,4 +1,51 @@
 
+// Отправка данных на сервер
+
+$('#form').submit(function(){
+	$.post(
+		'https://free-student.ru/process.php?action=update', // адрес обработчика
+		 $("#form").serialize(), // отправляемые данные  		
+  
+		function(msg) { // получен ответ сервера  
+			$('#form').hide('slow');
+			$('#form').html(msg);
+		}
+	);
+	
+	return false;
+});
+
+// $('#form').trigger('reset');
+// $(function() {  
+//   'use strict';
+//   $('#form').on('submit', function(e) {
+//       console.log('1'),
+
+//     e.preventDefault();
+//     $.ajax({
+
+//       url: 'https://free-student.ru/process.php?action=update',
+//       type: 'POST',
+//       contentType: false,
+//       processData: false,
+//       data: new FormData(this),
+//       success: function(msg) {
+//         console.log(msg);
+//         if (msg == 'ok') {
+//         //alert('Ваше сообщение отправлено');
+//           window.location.href = "spasibo.html";
+//           $('#form').trigger('reset'); 
+//          // очистка формы
+//         } else {
+//           alert('Ошибка');
+//         }
+//       }
+//     });
+//   });
+// });
+
+
+const emailCheckRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const app = Vue.createApp({
     el: '#demo',
@@ -7,18 +54,20 @@ const app = Vue.createApp({
             searchQuery: '',
             search: '',
             newUser: [
-                { name: 'Abc', data: '1', otzyv: 'blabla', },
-                { name: 'Tom1', data: '2', otzyv: 'blabla1', },
-                { name: 'Dom2', data: '3', otzyv: 'blabla2', }
+                { name: 'Abc', data: '1', email: 'rumta@ya.ru', otzyv: 'blabla', },
+                { name: 'Tom1', data: '2', email: 'rumta123@ya.ru', otzyv: 'blabla1', },
+                { name: 'Dom2', data: '3', email: 'rumta22@ya.ru', otzyv: 'blabla2', }
             ],
             users: [],
-            gridColumns: ['name', 'otzyv', 'data'],
+            gridColumns: ['name', 'otzyv', 'email', 'data'],
 
             gridData: [
-                { name: '', otzyv: 'user.otzyv', data: '' },
+                { name: '', otzyv: 'user.otzyv', data: '', email: 'email' },
             ],
             info: null,
             orderType: 0,
+            email: null,
+            isEmailTouched: false,
 
         }
     },
@@ -28,12 +77,10 @@ const app = Vue.createApp({
         axios
             .get('https://free-student.ru/process.php?action=read')
             .then(response => (this.info = response));
-            // axios
-            // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-            // .then(response => (this.info = response));
-
-
-        this.getAllUsers()
+        // axios
+        // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+        // .then(response => (this.info = response));
+        // this.getAllUsers()
     },
 
     computed: {
@@ -68,35 +115,49 @@ const app = Vue.createApp({
             //             : true
             //     );
 
+
+
+        },
+
+        isEmailValid() {
+            return emailCheckRegex.test(this.users.email);
+        },
+
+        isEmailError() {
+            return !this.isEmailValid && this.isEmailTouched;
         },
     },
 
-        methods: {
-            getAllUsers() {
-                axios.get("https://free-student.ru/process.php?action=read").then(response => {
-                    console.log(response)
+    methods: {
+        getAllUsers() {
+            axios.get("https://free-student.ru/process.php?action=read").then(response => {
+                console.log(response)
+            })
+                .catch(error => {
+                    console.log('danger')
+                    console.log(error.response)
                 })
-                    .catch(error => {
-                        console.log('danger')
-                        console.log(error.response)
-                    })
 
-            },
-            addUser: function () {
-                console.log("добавили");
-                 this.gridData.push(this.users);
-                 this.newUser.push(this.users);
-                 this.users = {}
-                
-
-            },
-            setOrderType(orderType) {
-                this.orderType = orderType
-            },
-          
+        },
+        addUser: function () {
+            console.log("добавили");
+            this.gridData.push(this.users);
+            this.newUser.push(this.users);
+            this.users = {}
+        },
+        setOrderType(orderType) {
+            this.orderType = orderType
+        },
+        someAction() {
+            if (!this.isEmailValid) {
+                return;
+            }
+            alert("Форма отправлена");
         },
 
-    
+    },
+
+
 
 })
 

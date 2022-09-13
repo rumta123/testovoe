@@ -3,7 +3,17 @@ body {
     font-size: 14px;
     color: #444;
   }
+  .field {
+    margin-bottom: 24px;
+  }
   
+  .field > label {
+    margin-right: 8px;
+  }
+  
+  .error {
+    border-color: red;
+  }
   table {
     border: 2px solid #42b983;
     border-radius: 3px;
@@ -57,5 +67,8 @@ body {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid #fff;
+  }
+  .form-group{
+    max-width: 500px;
   }
   
