@@ -1,18 +1,18 @@
 
 // Отправка данных на сервер
 
-$('#form').submit(function(){
-	$.post(
-		'https://free-student.ru/process.php?action=update', // адрес обработчика
-		 $("#form").serialize(), // отправляемые данные  		
-  
-		function(msg) { // получен ответ сервера  
-			$('#form').hide('slow');
-			$('#form').html(msg);
-		}
-	);
-	
-	return false;
+$('#form').submit(function () {
+    $.post(
+        'https://free-student.ru/process.php?action=update', // адрес обработчика
+        $("#form").serialize(), // отправляемые данные  		
+
+        function (msg) { // получен ответ сервера  
+            $('#form').hide('slow');
+            $('#form').html(msg);
+        }
+    );
+
+    return false;
 });
 
 // $('#form').trigger('reset');
@@ -67,6 +67,7 @@ const app = Vue.createApp({
             info: null,
             orderType: 0,
             email: null,
+            name: '',
             isEmailTouched: false,
 
         }
@@ -77,12 +78,24 @@ const app = Vue.createApp({
         axios
             .get('https://free-student.ru/process.php?action=read')
             .then(response => (this.info = response));
+
+            if(localStorage.getItem('user')) {
+                try {
+                  this.user = JSON.parse(localStorage.getItem('user'));
+                } catch(e) {
+                  localStorage.removeItem('user');
+                }
+              }
         // axios
         // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
         // .then(response => (this.info = response));
         // this.getAllUsers()
     },
-
+    watch: {
+        name(newName) {
+            localStorage.name = newName;
+        }
+    },
     computed: {
         filteredList() {
 
@@ -144,6 +157,7 @@ const app = Vue.createApp({
             this.gridData.push(this.users);
             this.newUser.push(this.users);
             this.users = {}
+            localStorage.user.name = this.user.name;
         },
         setOrderType(orderType) {
             this.orderType = orderType
