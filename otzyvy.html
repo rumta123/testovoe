@@ -38,14 +38,14 @@
           </tbody>
         </table>
       </script>
-  <script>
+  <!-- <script>
     var myModal = document.getElementById('myModal')
     var myInput = document.getElementById('myInput')
 
     myModal.addEventListener('shown.bs.modal', function () {
       myInput.focus()
     })
-  </script>
+  </script> -->
 </head>
 
 <body>
@@ -100,7 +100,7 @@
           <!-- Кнопка-триггер модального окна -->
           <div class="form-group">
             <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-             Редактирование
+              Редактирование
             </button>
           </div>
           <div class="form-group">
@@ -121,7 +121,7 @@
 
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <div class="modal-body">
+            <div v-if="currentNote" class="modal-body">
 
               <form action="" id="form">
                 <!--end email-->
@@ -132,7 +132,7 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                   <input type="submit" class="form_button btn btn-primary" value="Обновить" />
-                 
+
                 </div>
               </form>
 
@@ -149,7 +149,7 @@
       <form @submit.prevent="someAction()">
         <div class="form-group">
           <label>Имя</label>
-          <input type="text" name="name" class="form-control" v-model="users.name">
+          <input type="text" name="name" class="form-control" v-model="users.name" ref="noteTitle">
         </div>
         <div class="form-group">
           <label>Дата</label>

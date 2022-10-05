@@ -11,33 +11,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="css/style.css" rel="stylesheet" type="text/css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
   <title>Document</title>
-  <script type="text/x-template" id="grid-template">
 
-        <table>
-          <thead>
-            <tr>
-              <th v-for="key in columns"
-                @click="sortBy(key)"
-                :class="{ active: sortKey == key }">
-                {{ capitalize(key) }}
-                <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="entry in filteredHeroes">
-              <td v-for="key in columns">
-                {{ entry[key] }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </script>
 
 </head>
 
@@ -46,145 +21,41 @@
 
 
 
-  <body>
-    <!-- demo root element -->
-    <div id="demo" class="container">
+
+  <!-- demo root element -->
+
+  <div id="app">
+    <h1>проверка</h1>
+    <div class="notes">
       <div>
-        Моё имя <input v-model="name">
-        <br> Здравствуйте, бэкэнд логика написана, проверил через постман но json_encode не выводит, пробовал делать
-        вывод
-        как тут https://www.youtube.com/watch?v=hS6tdgrBJEo&t=288s не фига не отработало - это демо если бы вывелся
-        json, то дата бралась бы из бд и выводилась в таблицу, также если бы не выводилась мнговенно я бы какой нить
-        таймер поставил, чтобы раз в секунду обращался к action=read , ну вот такая логика была , остальное все по
-        аналогии с видео... На форумах по php меня еще больше запутывают, в документации я не нашел как решить проблему,
-        может во фреймворках типа ларавел делается все проще...</br><span style="color:red">PS буду благодарен за
-          обратный фид бэк (Удалить и редактировать я не стал делать, так как это планировалось на стороне сервера ,
-          логика там прописана)</span> </h3>
+        <button @click="createNote">Создать запись</button>
       </div>
-      <div>
-        вывод json_encode
-        {{ info }}
-      </div>
+      <nav>
+        <p v-if="!notes.length"> Нет записей</p>
+        <ul v-if="notes.length">
+          <li v-for="(note, n) in notes">
+            <button @click="currentNote = note" :class="{active:note === currentNote}">{{note.title}}</button>
 
-      <!--отзывы-->
-      <div>
-        <input placeholder="поиск по людям по нику" v-model="search">
-      </div>
-      </br>
-      <div>
-        <!--Сотритровка-->
-        <button @click="setOrderType(1)">Дата по возрастанию</button>
-        <button @click="setOrderType(2)">Дата по убыванию</button>
-        <button @click="setOrderType(0)">Сброс</button>
+          </li>
+        </ul>
 
-        <!--Конец-->
-      </div>
-      </br>
-      <div v-for="user in filteredList" :key="user.nane" :id="user.name">
-        <div style="display:flex">
-          <div> {{ user.name }} - </div>
-          <div> {{ user.email }} - </div>
-          <div> дата {{ user.data }}</div>
-        </div>
-        <div>
-          отзыв
-          <p>{{ user.otzyv }}</p>
-        </div>
-        <div style="display: flex;">
-          <!-- Кнопка-триггер модального окна -->
-          <div class="form-group">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Редактирование
-            </button>
-          </div>
-          <div class="form-group">
-            <button>Удалить</button>
-          </div>
-        </div>
-        <hr>
+
+      </nav>
+      <div v-if="currentNote" class="current-note">
+        <input v-model="currentNote.title" ref="noteTitle">
+        <textarea v-model="currentNote.contents"></textarea>
+        <p> {{localeDate}}</p>
+        <button @click="remove(n)">Remove</button>
       </div>
 
-
-      <!-- Модальное окно -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">Редактирование jотзыва</h5>
-
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-
-              <form action="" id="form">
-                <!--end email-->
-                <div class="form-group">
-                  <label>Отзыв</label>
-                  <textarea type="name" name="otzyv" class="form-control"></textarea>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                  <input type="submit" class="form_button btn btn-primary" value="Обновить" />
-
-                </div>
-              </form>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <!--Начало формы-->
-      <form @submit.prevent="someAction()">
-        <div class="form-group">
-          <label>Имя</label>
-          <input type="text" name="name" class="form-control" v-model="users.name">
-        </div>
-        <div class="form-group">
-          <label>Дата</label>
-          <input type="text" class="form-control" v-model="users.data">
-        </div>
-        <!--email-->
-        <br>
-        <br>
-        <div class="field form-group">
-          <label for="">Email</label>
-          <input v-model="users.email" type="email" @blur="isEmailTouched = true" :class="{ error: isEmailError }">
-          <div v-if="isEmailError">Поле заполено неверно</div>
-        </div>
-        <!--end email-->
-        <div class="form-group">
-          <label>Отзыв</label>
-          <textarea type="name" name="otzyv" class="form-control" v-model="users.otzyv"></textarea>
-        </div>
-        <div class="form-group">
-          <button type="submit" :disabled="!isEmailValid" @click="addUser()">
-            Добавить
-          </button>
-
-        </div>
-      </form>
-
-      <!--конец отзывы-->
-
-
-      </demo-grid>
-      <!--Add form-->
-      <div style="width: 500px;">
-
-        </br>
-        <demo-grid :heroes="newUser" :columns="gridColumns" :filter-key="search">
-      </div>
     </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="scripts/script.js"></script>
+  </div>
 
-  </body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="scripts/myscript.js"></script>
+
+</body>
 
 </html>

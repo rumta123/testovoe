@@ -70,30 +70,32 @@ const app = Vue.createApp({
             name: '',
             isEmailTouched: false,
 
+
         }
     },
     mounted() {
 
 
-        axios
-            .get('https://free-student.ru/process.php?action=read')
-            .then(response => (this.info = response));
+        // axios
+        //     .get('https://free-student.ru/process.php?action=read')
+        //     .then(response => (this.info = response));
 
-            if(localStorage.getItem('user')) {
-                try {
-                  this.user = JSON.parse(localStorage.getItem('user'));
-                } catch(e) {
-                  localStorage.removeItem('user');
-                }
-              }
+        if (localStorage.users) {
+            this.users = JSON.parse(localStorage.users)
+        }
+
         // axios
         // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
         // .then(response => (this.info = response));
         // this.getAllUsers()
     },
     watch: {
-        name(newName) {
-            localStorage.name = newName;
+        users: {
+            handler(newUsers) {
+                console.log('update')
+                localStorage.users = JSON.stringify(newUsers)
+            },
+            deep: true
         }
     },
     computed: {
@@ -152,12 +154,18 @@ const app = Vue.createApp({
                 })
 
         },
+
         addUser: function () {
+            const newNote =  { name: '', data: '', email: '', otzyv: '', }
             console.log("добавили");
             this.gridData.push(this.users);
             this.newUser.push(this.users);
-            this.users = {}
-            localStorage.user.name = this.user.name;
+            this.currentNote = newNote
+            this.$nextTick(function () {
+                this.$refs.noteTitle.focus()
+            })
+            
+
         },
         setOrderType(orderType) {
             this.orderType = orderType
