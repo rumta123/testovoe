@@ -86,7 +86,7 @@
         <!--Конец-->
       </div>
       </br>
-      <div v-for="user in filteredList" :key="user.nane" :id="user.name">
+      <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
         <div style="display:flex">
           <div> {{ user.name }} - </div>
           <div> {{ user.email }} - </div>
@@ -104,7 +104,7 @@
             </button>
           </div>
           <div class="form-group">
-            <button>Удалить</button>
+            <button @click="remove(n)">Удалить</button>
           </div>
         </div>
         <hr>
@@ -118,16 +118,15 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="staticBackdropLabel">Редактирование jотзыва</h5>
-
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <div v-if="currentNote" class="modal-body">
+
+            <div v-if="" class="modal-body">
 
               <form action="" id="form">
                 <!--end email-->
                 <div class="form-group">
                   <label>Отзыв</label>
-                  <textarea type="name" name="otzyv" class="form-control"></textarea>
+                  <textarea type="name" name="otzyv" class="form-control" v-model="newUser.otzyv"></textarea>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -149,24 +148,24 @@
       <form @submit.prevent="someAction()">
         <div class="form-group">
           <label>Имя</label>
-          <input type="text" name="name" class="form-control" v-model="users.name" ref="noteTitle">
+          <input type="text" name="name" class="form-control" v-model="newUser.name" ref="noteTitle">
         </div>
         <div class="form-group">
           <label>Дата</label>
-          <input type="text" class="form-control" v-model="users.data">
+          <input  type="text" :value="valueData" class="form-control" v-model="newUser.data">
         </div>
         <!--email-->
         <br>
         <br>
         <div class="field form-group">
           <label for="">Email</label>
-          <input v-model="users.email" type="email" @blur="isEmailTouched = true" :class="{ error: isEmailError }">
+          <input v-model="newUser.email" type="email" @blur="isEmailTouched = true" :class="{ error: isEmailError }">
           <div v-if="isEmailError">Поле заполено неверно</div>
         </div>
         <!--end email-->
         <div class="form-group">
           <label>Отзыв</label>
-          <textarea type="name" name="otzyv" class="form-control" v-model="users.otzyv"></textarea>
+          <textarea type="name" name="otzyv" class="form-control" v-model="newUser.otzyv"></textarea>
         </div>
         <div class="form-group">
           <button type="submit" :disabled="!isEmailValid" @click="addUser()">
@@ -184,7 +183,7 @@
       <div style="width: 500px;">
 
         </br>
-        <demo-grid :heroes="newUser" :columns="gridColumns" :filter-key="search">
+        <demo-grid :heroes="users" :columns="gridColumns" :filter-key="search">
       </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

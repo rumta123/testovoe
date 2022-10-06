@@ -14,6 +14,7 @@ $('#form').submit(function () {
 
     return false;
 });
+// var now = today.toLocaleString();
 
 // $('#form').trigger('reset');
 // $(function() {  
@@ -53,12 +54,12 @@ const app = Vue.createApp({
         return {
             searchQuery: '',
             search: '',
-            newUser: [
+            users: [
                 { name: 'Abc', data: '1', email: 'rumta@ya.ru', otzyv: 'blabla', },
                 { name: 'Tom1', data: '2', email: 'rumta123@ya.ru', otzyv: 'blabla1', },
                 { name: 'Dom2', data: '3', email: 'rumta22@ya.ru', otzyv: 'blabla2', }
             ],
-            users: [],
+            newUser: { name: '', otzyv: '', data: '', email: '' },
             gridColumns: ['name', 'otzyv', 'email', 'data'],
 
             gridData: [
@@ -69,6 +70,7 @@ const app = Vue.createApp({
             email: null,
             name: '',
             isEmailTouched: false,
+            valueData: 10
 
 
         }
@@ -101,12 +103,12 @@ const app = Vue.createApp({
     computed: {
         filteredList() {
 
-            const { search, newUser, orderType } = this   //
+            const { search, users, orderType } = this
 
             // Массив, который нужно отобразить в конечном итоге
             let fPersons;
             // Фильтруем людей
-            fPersons = newUser.filter(p => p.name.toLowerCase().indexOf(search) !== -1)
+            fPersons = users.filter(p => p.name.toLowerCase().indexOf(search) !== -1)
 
             //Сортировать
             if (orderType !== 0) {
@@ -135,7 +137,7 @@ const app = Vue.createApp({
         },
 
         isEmailValid() {
-            return emailCheckRegex.test(this.users.email);
+            return emailCheckRegex.test(this.newUser.email);
         },
 
         isEmailError() {
@@ -156,16 +158,18 @@ const app = Vue.createApp({
         },
 
         addUser: function () {
-            const newNote =  { name: '', data: '', email: '', otzyv: '', }
-            console.log("добавили");
-            this.gridData.push(this.users);
-            this.newUser.push(this.users);
-            this.currentNote = newNote
+            console.log("добавили", this.newUser);
+            this.gridData.push(this.newUser);
+            this.users.push(this.newUser);
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
             })
-            
+            this.newUser = {}
 
+        },
+        remove(x) {
+            console.log('удаление')
+            this.users.splice(x, 1);
         },
         setOrderType(orderType) {
             this.orderType = orderType
