@@ -70,7 +70,7 @@ const app = Vue.createApp({
             email: null,
             name: '',
             isEmailTouched: false,
-            valueData: 10
+            // valueData: 10
 
 
         }
@@ -81,7 +81,7 @@ const app = Vue.createApp({
         // axios
         //     .get('https://free-student.ru/process.php?action=read')
         //     .then(response => (this.info = response));
-
+        // this.newUser =10;
         if (localStorage.users) {
             this.users = JSON.parse(localStorage.users)
         }
@@ -159,7 +159,14 @@ const app = Vue.createApp({
 
         addUser: function () {
             console.log("добавили", this.newUser);
+            // Data = new Date();
+            // Hour = Data.getHours();
+            // Minutes = Data.getMinutes();
+            // Seconds = Data.getSeconds();
+            // this.newUser.data = Hour + ":" + Minutes + ":" + Seconds
+            this.newUser.data = new Date().toLocaleString()
             this.gridData.push(this.newUser);
+
             this.users.push(this.newUser);
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
