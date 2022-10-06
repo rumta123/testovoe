@@ -91,7 +91,7 @@
         <div style="display:flex">
           <div> {{ user.name }} - </div>
           <div> {{ user.email }} - </div>
-          <div> дата {{ user.data }}</div>
+          <div> {{ user.data }}</div>
         </div>
         <div>
           отзыв
@@ -100,7 +100,7 @@
         <div style="display: flex;">
           <!-- Кнопка-триггер модального окна -->
           <div class="form-group">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" @click="newUser = user" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               Редактирование
             </button>
           </div>
@@ -131,7 +131,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                  <input type="submit" class="form_button btn btn-primary" value="Обновить" />
+
 
                 </div>
               </form>
@@ -151,7 +151,7 @@
           <label>Имя</label>
           <input type="text" name="name" class="form-control" v-model="newUser.name" ref="noteTitle">
         </div>
-  
+
         <!--email-->
         <br>
         <br>

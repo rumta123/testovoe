@@ -63,13 +63,14 @@ const app = Vue.createApp({
             gridColumns: ['name', 'otzyv', 'email', 'data'],
 
             gridData: [
-                { name: '', otzyv: 'user.otzyv', data: '', email: 'email' },
+                { name: '', otzyv: '', data: '', email: '', edit: '' },
             ],
             info: null,
             orderType: 0,
             email: null,
             name: '',
             isEmailTouched: false,
+
             // valueData: 10
 
 
@@ -111,14 +112,17 @@ const app = Vue.createApp({
             fPersons = users.filter(p => p.name.toLowerCase().indexOf(search) !== -1)
 
             //Сортировать
+
             if (orderType !== 0) {
+
                 fPersons.sort(function (p1, p2) {  // Если возвращается отрицательное число p1, возвращается положительное число p2
                     // 1 означает порядок возрастания, 2 означает порядок убывания
                     if (orderType == 2) {
-                        return p2.data - p1.data
+                      
+                        return   Date.parse(p2.data)-Date.parse(p1.data)
                     }
                     else {
-                        return p1.data - p2.data
+                        return   Date.parse(p1.data)-Date.parse(p2.data)
                     }
                 })
             }
@@ -165,6 +169,8 @@ const app = Vue.createApp({
             // Seconds = Data.getSeconds();
             // this.newUser.data = Hour + ":" + Minutes + ":" + Seconds
             this.newUser.data = new Date().toLocaleString()
+            // this.newUser.data = new Date().toISOString()
+
             this.gridData.push(this.newUser);
 
             this.users.push(this.newUser);
