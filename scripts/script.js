@@ -14,36 +14,6 @@ $('#form').submit(function () {
 
     return false;
 });
-// var now = today.toLocaleString();
-
-// $('#form').trigger('reset');
-// $(function() {  
-//   'use strict';
-//   $('#form').on('submit', function(e) {
-//       console.log('1'),
-
-//     e.preventDefault();
-//     $.ajax({
-
-//       url: 'https://free-student.ru/process.php?action=update',
-//       type: 'POST',
-//       contentType: false,
-//       processData: false,
-//       data: new FormData(this),
-//       success: function(msg) {
-//         console.log(msg);
-//         if (msg == 'ok') {
-//         //alert('Ваше сообщение отправлено');
-//           window.location.href = "spasibo.html";
-//           $('#form').trigger('reset'); 
-//          // очистка формы
-//         } else {
-//           alert('Ошибка');
-//         }
-//       }
-//     });
-//   });
-// });
 
 
 const emailCheckRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -52,14 +22,16 @@ const app = Vue.createApp({
     el: '#demo',
     data() {
         return {
+            errorMsg: '',
+            successMsg: '',
             searchQuery: '',
             search: '',
             users: [
-                { name: 'Abc', data: '1', email: 'rumta@ya.ru', otzyv: 'blabla', },
-                { name: 'Tom1', data: '2', email: 'rumta123@ya.ru', otzyv: 'blabla1', },
-                { name: 'Dom2', data: '3', email: 'rumta22@ya.ru', otzyv: 'blabla2', }
+
             ],
             newUser: { name: '', otzyv: '', data: '', email: '' },
+            currentUser: {},
+            fethUser: 'https://free-student.ru/process.php?action=read',
             gridColumns: ['name', 'otzyv', 'email', 'data'],
 
             gridData: [
@@ -76,15 +48,19 @@ const app = Vue.createApp({
 
         }
     },
-    mounted() {
+    async mounted() {
+        this.getAllUsers()
+        const response = await fetch(this.fethUser)
+        const result = await response.json()
+        // this.users.push(result)
+        console.log(result)
 
-
-        // axios
-        //     .get('https://free-student.ru/process.php?action=read')
-        //     .then(response => (this.info = response));
-        // this.newUser =10;
+        axios
+            .get('https://free-student.ru/process.php?action=read')
+            .then(response => (this.info = response));
+        // this.newUser();
         if (localStorage.users) {
-            this.users = JSON.parse(localStorage.users)
+            this.users = await JSON.parse(localStorage.users)
         }
 
         // axios
@@ -118,11 +94,11 @@ const app = Vue.createApp({
                 fPersons.sort(function (p1, p2) {  // Если возвращается отрицательное число p1, возвращается положительное число p2
                     // 1 означает порядок возрастания, 2 означает порядок убывания
                     if (orderType == 2) {
-                      
-                        return   Date.parse(p2.data)-Date.parse(p1.data)
+
+                        return Date.parse(p2.data) - Date.parse(p1.data)
                     }
                     else {
-                        return   Date.parse(p1.data)-Date.parse(p2.data)
+                        return Date.parse(p1.data) - Date.parse(p2.data)
                     }
                 })
             }
@@ -151,13 +127,14 @@ const app = Vue.createApp({
 
     methods: {
         getAllUsers() {
-            axios.get("https://free-student.ru/process.php?action=read").then(response => {
-                console.log(response)
+            axios.get("https://free-student.ru/process.php?action=read").then(function (response) {
+                if (response.data.error) {
+                    app.errorMsg = response.data.message
+                }
+                else {
+                    app.users = response.data.users
+                }
             })
-                .catch(error => {
-                    console.log('danger')
-                    console.log(error.response)
-                })
 
         },
 
@@ -193,6 +170,9 @@ const app = Vue.createApp({
             }
             alert("Форма отправлена");
         },
+        someAction1() {
+            console.log('добавили')
+        }
 
     },
 

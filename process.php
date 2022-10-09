@@ -1,4 +1,11 @@
 ﻿<?php 
+// необходимые HTTP-заголовки
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -93,6 +100,18 @@ if ($action == 'delete'){
     $result['users'] =$users;
 }
 $conn -> close();
-echo json_encode($result, JSON_UNESCAPED_UNICODE);;
-
+header('Content-type: application/json');
+$json = json_encode($result, JSON_UNESCAPED_UNICODE);
+if ($json === false) {
+    // Avoid echo of empty string (which is invalid JSON), and
+    // JSONify the error message instead:
+    $json = json_encode(["jsonError" => json_last_error_msg()]);
+    if ($json === false) {
+        // This should not happen, but we go all the way now:
+        $json = '{"jsonError":"unknown"}';
+    }
+    // Set HTTP response status code to: 500 - Internal Server Error
+    http_response_code(500);
+}
+echo $json;
 ?>
