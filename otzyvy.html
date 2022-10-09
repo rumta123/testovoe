@@ -56,25 +56,15 @@
   <body>
     <!-- demo root element -->
     <div id="demo" class="container">
-      <div>
-        <br> Здравствуйте, бэкэнд логика написана, проверил через постман но json_encode не выводит, пробовал делать
-        вывод
-        как тут https://www.youtube.com/watch?v=hS6tdgrBJEo&t=288s не фига не отработало - это демо если бы вывелся
-        json, то дата бралась бы из бд и выводилась в таблицу, также если бы не выводилась мнговенно я бы какой нить
-        таймер поставил, чтобы раз в секунду обращался к action=read , ну вот такая логика была , остальное все по
-        аналогии с видео... На форумах по php меня еще больше запутывают, в документации я не нашел как решить проблему,
-        может во фреймворках типа ларавел делается все проще...</br><span style="color:red">PS буду благодарен за
-          обратный фид бэк (Удалить и редактировать я не стал делать, так как это планировалось на стороне сервера ,
-          логика там прописана)</span> </h3>
-      </div>
-      <div>
+
+      <!-- <div>
         <div v-for="user in info">
           <p>{{user.id}}</p>
 
         </div>
         вывод json_encode
         {{ users }}
-      </div>
+      </div> -->
 
       <!--отзывы-->
       <div>
@@ -90,35 +80,38 @@
         <!--Конец-->
       </div>
       </br>
-      <p v-if="!users.length" v-if="errorMsg"> {{errorMsg}} Нет записей</p>
-      <div v-if="users.length" v-if="successMsg" v-for="user in filteredList" v-for="(user, n) in users"
-        :key="user.nane" :id="user.name">
-        <div style="">
-          {{ successMsg }}
-          <div> {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
+      <p v-if="!users.length"> {{errorMsg}} Нет записей</p>
+
+      <div v-if="users.length">
+        <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
+          <div style="">
+
+            <div> {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
 
 
 
-        </div>
-        <div>
-
-          <p>{{ user.otzyv }}</p>
-        </div>
-        <div style="display: flex;" v-if="user.edit">
-
-          <!-- Кнопка-триггер модального окна -->
-          <div class="form-group">
-
-            <button type="button" @click="newUser = user" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Редактирование
-            </button>
           </div>
-          <div class="form-group">
-            <button @click="remove(n)">Удалить</button>
+          <div>
+
+            <p>{{ user.otzyv }}</p>
           </div>
+          <div style="display: flex;" v-if="user.edit">
+
+            <!-- Кнопка-триггер модального окна -->
+            <div class="form-group">
+
+              <button type="button" @click="newUser = user" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Редактирование
+              </button>
+            </div>
+            <div class="form-group">
+              <button @click="remove(n)">Удалить</button>
+            </div>
+          </div>
+          <hr>
         </div>
-        <hr>
       </div>
+
 
 
       <!-- Модальное окно -->

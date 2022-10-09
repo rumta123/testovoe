@@ -1,6 +1,3 @@
-
-// Отправка данных на сервер
-
 $('#form').submit(function () {
     $.post(
         'https://free-student.ru/process.php?action=update', // адрес обработчика
@@ -37,7 +34,7 @@ const app = Vue.createApp({
             gridData: [
                 { name: '', otzyv: '', data: '', email: '', edit: '' },
             ],
-            info: null,
+            info: [],
             orderType: 0,
             email: null,
             name: '',
@@ -133,9 +130,7 @@ const app = Vue.createApp({
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
             })
-            axios
-            .get('https://free-student.ru/process.php?action=create')
-            .then(response => (this.info = response.data.users));
+          
             this.newUser = {}
 
         },
