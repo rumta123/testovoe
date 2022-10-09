@@ -49,24 +49,22 @@ const app = Vue.createApp({
         }
     },
     async mounted() {
-        this.getAllUsers()
+       
         const response = await fetch(this.fethUser)
         const result = await response.json()
+        // response.users[0].name
         // this.users.push(result)
-        console.log(result)
+        console.log(result.users)
 
         axios
             .get('https://free-student.ru/process.php?action=read')
-            .then(response => (this.info = response));
+            .then(response => (this.info = response.data.users));
         // this.newUser();
         if (localStorage.users) {
             this.users = await JSON.parse(localStorage.users)
         }
 
-        // axios
-        // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-        // .then(response => (this.info = response));
-        // this.getAllUsers()
+
     },
     watch: {
         users: {
@@ -103,15 +101,7 @@ const app = Vue.createApp({
                 })
             }
             return fPersons;
-            //  this.newUser
-
-            //     .filter(
-            //         (entry) => this.newUser.length
-            //             ? Object.keys(this.newUser[0])
-            //                 .some(key => ('' + entry[key]).toLowerCase().includes(this.search))
-            //             : true
-            //     );
-
+      
 
 
         },
@@ -126,18 +116,7 @@ const app = Vue.createApp({
     },
 
     methods: {
-        getAllUsers() {
-            axios.get("https://free-student.ru/process.php?action=read").then(function (response) {
-                if (response.data.error) {
-                    app.errorMsg = response.data.message
-                }
-                else {
-                    app.users = response.data.users
-                }
-            })
-
-        },
-
+      
         addUser: function () {
             console.log("добавили", this.newUser);
             // Data = new Date();
@@ -147,13 +126,16 @@ const app = Vue.createApp({
             // this.newUser.data = Hour + ":" + Minutes + ":" + Seconds
             this.newUser.data = new Date().toLocaleString()
             // this.newUser.data = new Date().toISOString()
-
+            this.newUser.edit = 1
             this.gridData.push(this.newUser);
 
             this.users.push(this.newUser);
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
             })
+            axios
+            .get('https://free-student.ru/process.php?action=create')
+            .then(response => (this.info = response.data.users));
             this.newUser = {}
 
         },

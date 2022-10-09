@@ -68,8 +68,12 @@
           логика там прописана)</span> </h3>
       </div>
       <div>
+        <div v-for="user in info">
+          <p>{{user.id}}</p>
+
+        </div>
         вывод json_encode
-        {{ info }}
+        {{ users }}
       </div>
 
       <!--отзывы-->
@@ -86,8 +90,9 @@
         <!--Конец-->
       </div>
       </br>
-      <p v-if="!users.length"> {{errorMsg}} Нет записей</p>
-      <div v-if="users.length" v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
+      <p v-if="!users.length" v-if="errorMsg"> {{errorMsg}} Нет записей</p>
+      <div v-if="users.length" v-if="successMsg" v-for="user in filteredList" v-for="(user, n) in users"
+        :key="user.nane" :id="user.name">
         <div style="">
           {{ successMsg }}
           <div> {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
@@ -99,9 +104,11 @@
 
           <p>{{ user.otzyv }}</p>
         </div>
-        <div style="display: flex;">
+        <div style="display: flex;" v-if="user.edit">
+
           <!-- Кнопка-триггер модального окна -->
           <div class="form-group">
+
             <button type="button" @click="newUser = user" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               Редактирование
             </button>
