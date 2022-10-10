@@ -55,10 +55,11 @@ const app = Vue.createApp({
 
         axios
             .get('https://free-student.ru/process.php?action=read')
-            .then(response => (this.info = response.data.users));
+            .then(response => (this.users = response.data.users));
         // this.newUser();
         if (localStorage.users) {
             this.users = await JSON.parse(localStorage.users)
+          
         }
 
 
@@ -80,8 +81,8 @@ const app = Vue.createApp({
             // Массив, который нужно отобразить в конечном итоге
             let fPersons;
             // Фильтруем людей
-            fPersons = users.filter(p => p.name.toLowerCase().indexOf(search) !== -1)
-
+            fPersons = users.filter(p => p.name.indexOf(search) !== -1)
+         
             //Сортировать
 
             if (orderType !== 0) {
@@ -129,10 +130,21 @@ const app = Vue.createApp({
             this.users.push(this.newUser);
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
+                var FormData =app.toFormData(app.newUser)
+          axios
+          .get('https://free-student.ru/process.php?action=create', FormData)
+          .then(response => (this.info = response.data.users));
             })
           
             this.newUser = {}
 
+        },
+        toFormData(obj){
+            var fd = new FormData()
+            for(var i in obj){
+                fd.append(i, obj[i])
+            }
+            return fd
         },
         remove(x) {
             console.log('удаление')

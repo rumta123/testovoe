@@ -80,9 +80,9 @@
         <!--Конец-->
       </div>
       </br>
-      <p v-if="!users.length"> {{errorMsg}} Нет записей</p>
+      <p v-if="!users.length" > {{errorMsg}}  Нет записей</p>
 
-      <div v-if="users.length">
+      <div v-if="users.length" >
         <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
           <div style="">
 
@@ -149,7 +149,7 @@
 
 
       <!--Начало формы-->
-      <form @submit.prevent="someAction()" id="form">
+      <form @submit.prevent="someAction()">
         <div class="form-group">
           <label>Имя</label>
           <input type="text" name="name" class="form-control" v-model="newUser.name" ref="noteTitle">
@@ -160,7 +160,8 @@
         <br>
         <div class="field form-group">
           <label for="">Email</label>
-          <input v-model="newUser.email" type="email" @blur="isEmailTouched = true" :class="{ error: isEmailError }">
+          <input v-model="newUser.email" name="email" type="email" @blur="isEmailTouched = true"
+            :class="{ error: isEmailError }">
           <div v-if="isEmailError">Поле заполено неверно</div>
         </div>
         <!--end email-->
