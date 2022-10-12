@@ -131,18 +131,19 @@ const app = Vue.createApp({
             // this.newUser = {}
 
         },
-        toFormData: function (obj) {
-            console.log('111')
-            var form_data = new FormData();
-            for (var key in obj) {
-                form_data.append(key, obj[key]);
-            }
-            return form_data;
-        },
+
 
         remove(x) {
             console.log('удаление')
-            this.users.splice(x, 1);
+            axios.post('https://free-student.ru/process.php?action=delete', this.users.splice(x, 1), {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+
+            }, console.log(this.newUser, 'delete'))
+
+
+
         },
         setOrderType(orderType) {
             this.orderType = orderType
