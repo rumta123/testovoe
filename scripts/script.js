@@ -135,13 +135,13 @@ const app = Vue.createApp({
 
         remove(x) {
             console.log('удаление')
-            axios.post('https://free-student.ru/process.php?action=delete', this.users.splice(x, 1), {
+            axios.post('https://free-student.ru/process.php?action=delete', this.users, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
 
-            }, console.log(this.newUser, 'delete'))
-
+            }, console.log(this.users, 'delete'))
+            this.users.splice(x, 1);
 
 
         },

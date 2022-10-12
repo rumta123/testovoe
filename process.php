@@ -80,11 +80,6 @@ if ($action == 'update'){
 
 if ($action == 'delete'){
   
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $otzyv = $_POST['otzyv'];
-   
-
     $sql = $conn -> query ("DELETE from users  WHERE id ='$id' ");
    if ($sql){
     $result['message'] = 'User DELETE';
