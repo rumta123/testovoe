@@ -1,16 +1,3 @@
-$('#form').submit(function () {
-    $.post(
-        'https://free-student.ru/process.php?action=create', // адрес обработчика
-        $("#form").serialize(), // отправляемые данные  		
-
-        function (msg) { // получен ответ сервера  
-            $('#form').hide('slow');
-            $('#form').html(msg);
-        }
-    );
-
-    return false;
-});
 
 
 const emailCheckRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -134,7 +121,7 @@ const app = Vue.createApp({
                     'Content-Type': 'multipart/form-data'
                 },
 
-            }, console.log('ready'))
+            }, console.log(this.newUser, 'ready'))
 
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
@@ -161,6 +148,7 @@ const app = Vue.createApp({
             this.orderType = orderType
         },
         someAction() {
+
             if (!this.isEmailValid) {
                 return;
             }

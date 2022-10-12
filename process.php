@@ -39,14 +39,12 @@ if ($action == 'read'){
 }
 
 if ($action == 'create'){
-    $name = $_POST('name');
-    $email = $_POST('email');
-    $otzyv = $_POST('otzyv');
-
-   // $now = time();
-   $now = date("Y-m-d H:i:s");  
-  //  $dircreate = date('d-m-Y в H:i',strtotime($all_messages['MessageDate']));
-    $sql = $conn -> query ("INSERT INTO users(name, email, otzyv) VALUES ('$name', '$email', '$otzyv')");
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $otzyv = $_POST['otzyv'];
+   $data = date("Y-m-d H:i:s");
+  
+    $sql = $conn -> query ("INSERT INTO users(name, email, otzyv, data) VALUES ('$name', '$email', '$otzyv', '$data')");
    if ($sql){
     $result['message'] = 'User added';
    }
@@ -61,11 +59,10 @@ if ($action == 'create'){
 
 
 if ($action == 'update'){
-    $id = $_POST('id');
-    $name = $_POST('name');
-    $email = $_POST('email');
-    $otzyv = $_POST('otzyv');
-    $ip =  $_SERVER['REMOTE_ADDR'];
+
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $otzyv = $_POST['otzyv'];
     $now = time();
 
     $sql = $conn -> query ("UPDATE users SET name ='$name', email = '$email', otzyv ='$otzyv' WHERE id ='$id' ");
@@ -82,12 +79,11 @@ if ($action == 'update'){
 
 
 if ($action == 'delete'){
-    $id = $_POST('id');
-    $name = $_POST('name');
-    $email = $_POST('email');
-    $otzyv = $_POST('otzyv');
-    $ip =  $_SERVER['REMOTE_ADDR'];
-    $now = time();
+  
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $otzyv = $_POST['otzyv'];
+   
 
     $sql = $conn -> query ("DELETE from users  WHERE id ='$id' ");
    if ($sql){
