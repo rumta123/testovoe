@@ -80,9 +80,9 @@
         <!--Конец-->
       </div>
       </br>
-      <p v-if="!users.length" > {{errorMsg}}  Нет записей</p>
+      <p v-if="!users.length"> {{errorMsg}} Нет записей</p>
 
-      <div v-if="users.length" >
+      <div v-if="users.length">
         <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
           <div style="">
 
@@ -125,7 +125,7 @@
 
             <div v-if="" class="modal-body">
 
-              <form action="#" id="form">
+              <form action="#">
                 <!--end email-->
                 <div class="form-group">
                   <label>Отзыв</label>
@@ -149,7 +149,7 @@
 
 
       <!--Начало формы-->
-      <form @submit.prevent="someAction()">
+      <form @submit.prevent.stop="someAction()">
         <div class="form-group">
           <label>Имя</label>
           <input type="text" name="name" class="form-control" v-model="newUser.name" ref="noteTitle">

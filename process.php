@@ -42,11 +42,11 @@ if ($action == 'create'){
     $name = $_POST('name');
     $email = $_POST('email');
     $otzyv = $_POST('otzyv');
-    $ip =  $_SERVER['REMOTE_ADDR'];
+
    // $now = time();
    $now = date("Y-m-d H:i:s");  
   //  $dircreate = date('d-m-Y в H:i',strtotime($all_messages['MessageDate']));
-    $sql = $conn -> query ("INSERT INTO users(name, email, otzyv, userDate, ip) VALUES ('$name', '$email', '$otzyv', '$now', '$ip')");
+    $sql = $conn -> query ("INSERT INTO users(name, email, otzyv) VALUES ('$name', '$email', '$otzyv')");
    if ($sql){
     $result['message'] = 'User added';
    }
@@ -55,7 +55,8 @@ if ($action == 'create'){
     $result['message'] = 'Ошибка пользователь не добавлен';
    }
 
-    $result['users'] =$users;
+      $result['users'] =$users;
+  
 }
 
 

@@ -1,6 +1,6 @@
 $('#form').submit(function () {
     $.post(
-        'https://free-student.ru/process.php?action=update', // адрес обработчика
+        'https://free-student.ru/process.php?action=create', // адрес обработчика
         $("#form").serialize(), // отправляемые данные  		
 
         function (msg) { // получен ответ сервера  
@@ -46,7 +46,7 @@ const app = Vue.createApp({
         }
     },
     async mounted() {
-       
+
         const response = await fetch(this.fethUser)
         const result = await response.json()
         // response.users[0].name
@@ -59,7 +59,7 @@ const app = Vue.createApp({
         // this.newUser();
         if (localStorage.users) {
             this.users = await JSON.parse(localStorage.users)
-          
+
         }
 
 
@@ -82,7 +82,7 @@ const app = Vue.createApp({
             let fPersons;
             // Фильтруем людей
             fPersons = users.filter(p => p.name.indexOf(search) !== -1)
-         
+
             //Сортировать
 
             if (orderType !== 0) {
@@ -99,7 +99,7 @@ const app = Vue.createApp({
                 })
             }
             return fPersons;
-      
+
 
 
         },
@@ -114,38 +114,45 @@ const app = Vue.createApp({
     },
 
     methods: {
-      
+
+
+
         addUser: function () {
             console.log("добавили", this.newUser);
-            // Data = new Date();
-            // Hour = Data.getHours();
-            // Minutes = Data.getMinutes();
-            // Seconds = Data.getSeconds();
-            // this.newUser.data = Hour + ":" + Minutes + ":" + Seconds
             this.newUser.data = new Date().toLocaleString()
-            // this.newUser.data = new Date().toISOString()
+
             this.newUser.edit = 1
             this.gridData.push(this.newUser);
 
             this.users.push(this.newUser);
+
+
+
+
+            axios.post('https://free-student.ru/process.php?action=create', this.newUser, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+
+            }, console.log('ready'))
+
             this.$nextTick(function () {
                 this.$refs.noteTitle.focus()
-                var FormData =app.toFormData(app.newUser)
-          axios
-          .get('https://free-student.ru/process.php?action=create', FormData)
-          .then(response => (this.info = response.data.users));
+                this.newUser = {}
             })
-          
-            this.newUser = {}
+
+            // this.newUser = {}
 
         },
-        toFormData(obj){
-            var fd = new FormData()
-            for(var i in obj){
-                fd.append(i, obj[i])
+        toFormData: function (obj) {
+            console.log('111')
+            var form_data = new FormData();
+            for (var key in obj) {
+                form_data.append(key, obj[key]);
             }
-            return fd
+            return form_data;
         },
+
         remove(x) {
             console.log('удаление')
             this.users.splice(x, 1);
