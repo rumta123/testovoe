@@ -151,7 +151,7 @@ const app = Vue.createApp({
 
 
         },
-        remove() {
+        remove(x) {
             console.log('удаление')
             const $id = Number(this.users[1].id);
 
