@@ -86,7 +86,7 @@
         <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
           <div style="">
 
-            <div> {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
+            <div> {{user.id}} - {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
 
 
 
@@ -95,7 +95,7 @@
 
             <p>{{ user.otzyv }}</p>
           </div>
-          <div style="display: flex;" v-if="user.edit">
+          <div style="display: flex;" >
 
             <!-- Кнопка-триггер модального окна -->
             <div class="form-group">
@@ -123,17 +123,18 @@
               <h5 class="modal-title" id="staticBackdropLabel">Редактирование jотзыва</h5>
             </div>
 
-            <div v-if="" class="modal-body">
+            <div class="modal-body">
 
-              <form action="#">
+              <form action="#" @submit.prevent.stop="someAction1()">
                 <!--end email-->
                 <div class="form-group">
-                  <label>Отзыв</label>
+                  <label>Отзыв {{ newUser.id }}</label>
                   <textarea type="name" name="otzyv" class="form-control" v-model="newUser.otzyv"></textarea>
                 </div>
                 <div class="modal-footer">
-                  <input type="submit" class="btn btn-secondary" name="" id="" value="сохранить">
-                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button> -->
+
+                  <button type="button" class="btn btn-secondary" @click=" update()"
+                    data-bs-dismiss="modal">Закрыть</button>
 
 
                 </div>
@@ -165,15 +166,16 @@
           <div v-if="isEmailError">Поле заполено неверно</div>
         </div>
         <!--end email-->
-        <div class="form-group">
-          <label>Отзыв</label>
-          <textarea type="name" name="otzyv" class="form-control" v-model="newUser.otzyv"></textarea>
-        </div>
-        <div class="form-group">
-          <button type="submit" :disabled="!isEmailValid" @click="addUser()">
-            Добавить
-          </button>
-
+        <div  >
+          <div class="form-group">
+            <label>Отзыв</label>
+            <textarea type="name" name="otzyv" class="form-control" v-model="newUser.otzyv"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" :disabled="!isEmailValid" @click="addUser()">
+              Добавить
+            </button>
+          </div>
         </div>
       </form>
 

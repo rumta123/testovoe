@@ -133,15 +133,33 @@ const app = Vue.createApp({
         },
 
 
-        remove(x) {
-            console.log('удаление')
-            axios.post('https://free-student.ru/process.php?action=delete', this.users, {
+        update() {
+
+            axios.get('https://free-student.ru/process.php?action=update&id=' + this.newUser.id + '&otzyv=' + this.newUser.otzyv, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
 
-            }, console.log(this.users, 'delete'))
-            this.users.splice(x, 1);
+            })
+            this.$nextTick(function () {
+                this.$refs.noteTitle.focus()
+                this.newUser = {}
+            })
+
+
+        },
+        remove() {
+            console.log('удаление')
+            const $id = Number(this.users[1].id);
+
+            axios.get('https://free-student.ru/process.php?action=delete&id=' + $id, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+
+            }, console.log(Number(this.users[1].id), 'delete'))
+
+            this.users.splice(x, 1)
 
 
         },
@@ -156,7 +174,7 @@ const app = Vue.createApp({
             alert("Форма отправлена");
         },
         someAction1() {
-            console.log('добавили')
+            console.log('обновили')
         }
 
     },
