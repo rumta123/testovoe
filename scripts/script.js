@@ -13,7 +13,7 @@ const app = Vue.createApp({
             users: [
 
             ],
-            newUser: { name: '', otzyv: '', data: '', email: '' },
+            newUser: {id:'', name: '', otzyv: '', data: '', email: '' },
             currentUser: {},
             fethUser: 'https://free-student.ru/process.php?action=read',
             gridColumns: ['name', 'otzyv', 'email', 'data'],
@@ -107,7 +107,10 @@ const app = Vue.createApp({
         addUser: function () {
             console.log("добавили", this.newUser);
             this.newUser.data = new Date().toLocaleString()
-
+            // const $id = Number(this.users[1].id);
+            // console.log($id)
+        
+         //   this.newUser.id =  $id ;
             this.newUser.edit = 1
             this.gridData.push(this.newUser);
 
