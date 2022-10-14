@@ -83,7 +83,7 @@
       <p v-if="!users.length"> {{errorMsg}} Нет записей</p>
 
       <div v-if="users.length">
-        <div v-for="user in filteredList" v-for="(user, n) in users" :key="user.nane" :id="user.name">
+        <div v-for="user in filteredList" v-for="user in users" :key="user.nane" :id="user.name">
           <div style="">
 
             <div> {{user.id}} - {{ user.name }} - {{ user.email }} - {{ user.data }} </div>
@@ -105,7 +105,7 @@
               </button>
             </div>
             <div class="form-group">
-              <button @click="remove(n)">Удалить</button>
+              <button @click="remove(user.id)">Удалить</button>
             </div>
           </div>
           <hr>

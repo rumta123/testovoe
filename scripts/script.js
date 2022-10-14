@@ -13,7 +13,7 @@ const app = Vue.createApp({
             users: [
 
             ],
-            newUser: {id:'', name: '', otzyv: '', data: '', email: '' },
+            newUser: { id: '', name: '', otzyv: '', data: '', email: '' },
             currentUser: {},
             fethUser: 'https://free-student.ru/process.php?action=read',
             gridColumns: ['name', 'otzyv', 'email', 'data'],
@@ -58,7 +58,8 @@ const app = Vue.createApp({
                 localStorage.users = JSON.stringify(newUsers)
             },
             deep: true
-        }
+        },
+
     },
     computed: {
         filteredList() {
@@ -66,9 +67,19 @@ const app = Vue.createApp({
             const { search, users, orderType } = this
 
             // Массив, который нужно отобразить в конечном итоге
-            let fPersons;
+            let fPersons
             // Фильтруем людей
-            fPersons = users.filter(p => p.name.indexOf(search) !== -1)
+
+
+
+
+
+            fPersons = users.filter(p => p.name.toUpperCase().indexOf(search.toUpperCase()) !== -1)
+
+
+            // fPersons1 = users.filter(p => p.name.toLowerCase().indexOf(search)   !== -1)
+            console.log(fPersons)
+            // fPersons = users.filter(p => p.name.indexOf(search) !== -1)
 
             //Сортировать
 
@@ -85,7 +96,8 @@ const app = Vue.createApp({
                     }
                 })
             }
-            return fPersons;
+
+            return fPersons
 
 
 
@@ -107,10 +119,7 @@ const app = Vue.createApp({
         addUser: function () {
             console.log("добавили", this.newUser);
             this.newUser.data = new Date().toLocaleString()
-            // const $id = Number(this.users[1].id);
-            // console.log($id)
-        
-         //   this.newUser.id =  $id ;
+
             this.newUser.edit = 1
             this.gridData.push(this.newUser);
 
@@ -130,7 +139,9 @@ const app = Vue.createApp({
                 this.$refs.noteTitle.focus()
                 this.newUser = {}
             })
-
+            axios
+                .get('https://free-student.ru/process.php?action=read')
+                .then(response => (this.users = response.data.users));
             // this.newUser = {}
 
         },
@@ -151,19 +162,21 @@ const app = Vue.createApp({
 
 
         },
-        remove(x) {
+        remove(id) {
             console.log('удаление')
-            const $id = Number(this.users[1].id);
-
-            axios.get('https://free-student.ru/process.php?action=delete&id=' + $id, {
+            //  отфильтровать все пользователей, где пользователь id   не равен id
+            this.users = this.users.filter(user => user.id !== id)
+            axios.get('https://free-student.ru/process.php?action=delete&id=' + id, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
 
-            }, console.log(Number(this.users[1].id), 'delete'))
+            }, console.log(id, 'delete'))
 
-            this.users.splice(x, 1)
-
+            // this.users.splice(id, 1)
+            // axios
+            //     .get('https://free-student.ru/process.php?action=read')
+            //     .then(response => (this.users = response.data.users));
 
         },
         setOrderType(orderType) {
